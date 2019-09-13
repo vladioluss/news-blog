@@ -17,33 +17,37 @@
             <a class="text-muted" href="#">Logo</a>
           </div>
           <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark" href="#">NEWS</a>
+            <a class="blog-header-logo text-dark" href="">NEWS</a>
           </div>
           <div class="col-4 d-flex justify-content-end align-items-center">
-            <a class="btn btn-sm btn-outline-secondary" href="#">Войти</a>
-            <a class="btn btn-sm btn-outline-secondary" href="#">Регистрация</a>
+            <a class="btn btn-sm btn-outline-secondary" href="login.php">Войти</a>&nbsp;
+            <a class="btn btn-sm btn-outline-secondary" href="reg.php">Регистрация</a>
           </div>
         </div>
       </header>
       <br><br>
-        <?php $data = $db::getRows("SELECT * FROM new");
+        <?php $data = $db::getRows("SELECT * FROM new"); //вернёт из БД все записи
+        //$id =
         foreach ($data as $item) {
-            print ('<div class="row mb-2">
-                <div class="col-md-6">
-                  <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                    <div class="card-body d-flex flex-column align-items-start">
-                      <h3 class="mb-0">
-                        <a class="text-dark" href="#">'.$item['header'].'</a>
-                      </h3>
-                      <p class="card-text mb-auto">'.$item['body'].'</p>
-                      <div class="mb-1 text-muted">Просмотров: '.$item['views'].'</div>
-                      <div class="mb-1 text-muted">Автор: '.$item['author'].'</div>
-                      <a href="#">Перейти к новости</a>
+            print ('
+            <div class="">
+                <div class="mb-2">
+                    <div class="col-md-6">
+                        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <h3 class="mb-0">
+                                    <a class="text-dark" href="view.php?'.$item['id'].'">'.$item['header'].'</a>
+                                </h3>
+                                <p class="card-text mb-auto">'.$item['body'].'</p>
+                                <div class="mb-1 text-muted">Автор: '.$item['author'].'</div>
+                                <div class="mb-1 text-muted">Просмотров: '.$item['views'].'</div>
+                                <a href="view.php?'.$item['id'].'">Перейти к новости</a>
+                            </div>
+                        <img class="card-img-right flex-auto d-none d-lg-block" src="http://placehold.jp/400x400.png" alt="фоточка, а на ней красоточка">
+                        </div>
                     </div>
-                    <img class="card-img-right flex-auto d-none d-lg-block" data-src="holder.js/200x250?theme=thumb" alt="фоточка, а на ней красоточка">
-                  </div>
                 </div>
-              </div>');
+            </div>');
         } ?>
     </div>
 
