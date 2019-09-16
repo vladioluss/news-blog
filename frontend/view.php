@@ -9,18 +9,19 @@
     include '../backend/db.php';
     $db = new DB();
 
-    $id = 2;
-    $data = $db::getRows("SELECT * FROM `new` WHERE `id` = ?", [$id]); //вернёт из БД все записи по id
+    //$id = $db::getRow("SELECT id FROM new");
 
-    foreach ($data as $item) {
+    $data = $db::getRows("SELECT * FROM new WHERE id = ?", [$id]); //вернёт из БД все записи по id
+
+    foreach ($data as $row) {
         print ('
         <div class="blog-post">
-            <h2 class="blog-post-title">'.$item['header'].'</h2>
+            <h2 class="blog-post-title">'.$row['header'].'</h2>
             <hr>
             <img class="" src="http://placehold.jp/400x400.png" alt="фоточка, а на ней красоточка">
-            <p>'.$item['body'].'</p>
-            <p class="blog-post-meta">Автор статьи: '.$item['author'].'</p>
-            <p class="blog-post-meta justy">Просмотры: '.$item['views'].'</p>
+            <p>'.$row['body'].'</p>
+            <p class="blog-post-meta">Автор статьи: '.$row['author'].'</p>
+            <p class="blog-post-meta">Просмотры: '.$row['views'].'</p>
             <a href="index.php">Вернуться назад</a>
         </div>');
     }

@@ -8,10 +8,9 @@
     {
         /**
          * Настройки подключения
-         * Лучше выносить в конфиг
          * self::DB_HOST -> Config::DB_HOST
          */
-        const DB_HOST = '127.0.0.1'; // localhost
+        const DB_HOST = 'localhost';
         const DB_USER = 'root';
         const DB_PASSWORD = '';
         const DB_NAME = 'project-news';
@@ -107,7 +106,7 @@
          * @param array $args
          * @return mixed
          */
-        public static function getRow($query, $args = [])  {
+        public static function getRow($query, $args = []) {
             return self::run($query, $args)->fetch();
         }
 
@@ -116,7 +115,7 @@
          * @param array $args
          * @return array
          */
-        public static function getRows($query, $args = [])  {
+        public static function getRows($query, $args = []) {
             return self::run($query, $args)->fetchAll();
         }
 
