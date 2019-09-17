@@ -27,6 +27,7 @@
       </header>
       <br><br>
         <?php
+
         $data = $db::getRows("SELECT * FROM new"); //вернёт из БД все записи
         foreach ($data as $row) {
             print ('
@@ -36,12 +37,12 @@
                         <div class="card flex-md-row mb-4 shadow-sm h-md-250">
                             <div class="card-body d-flex flex-column align-items-start">
                                 <h3 class="mb-0">
-                                    <a class="text-dark" href="view.php?new='.$row['id'].'">'.$row['header'].'</a>
+                                    <a class="text-dark" href="view.php?id='.$row['id'].'">'.$row['header'].'</a>
                                 </h3>
                                 <p class="card-text mb-auto">'.$row['body'].'</p>
                                 <div class="mb-1 text-muted">Автор: '.$row['author'].'</div>
                                 <div class="mb-1 text-muted">Просмотров: '.$row['views'].'</div>
-                                <a href="view.php?new='.$row['id'].'">Перейти к новости</a>
+                                <a href="view.php?id='.$row['id'].'">Перейти к новости</a>
                             </div>
                         <img class="card-img-right flex-auto d-none d-lg-block" src="http://placehold.jp/400x400.png" alt="фоточка, а на ней красоточка">
                         </div>
@@ -52,6 +53,6 @@
     </div>
 
     <footer class="blog-footer">
-      <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+      <p>NEWS SITE</p>
     </footer>
 </body>

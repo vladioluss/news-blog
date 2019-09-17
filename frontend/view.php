@@ -9,8 +9,7 @@
     include '../backend/db.php';
     $db = new DB();
 
-    //$id = $db::getRow("SELECT id FROM new");
-
+    $id = $_GET['id'];
     $data = $db::getRows("SELECT * FROM new WHERE id = ?", [$id]); //вернёт из БД все записи по id
 
     foreach ($data as $row) {

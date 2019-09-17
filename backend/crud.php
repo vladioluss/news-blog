@@ -1,10 +1,68 @@
+<?php
+include '../backend/db.php';
+$db = new DB();
+
+$header = $_GET['header'];
+$body = $_GET['body'];
+$author = $_GET['author'];
+$add = $_GET['ok']; //кнопка создания
+
+$upd = $_GET['upd']; //кнопка редаттирования
+
+$del = $_GET['del']; //кнопка удаления
+
+if (isset($add)) { //Создание записи
+    $query = "INSERT INTO new (
+      header,
+      body,
+      author)
+    VALUES (
+      :header,
+      :body,
+      :author
+    )";
+
+    $args = [
+        'header' => $header,
+        'body' => $body,
+        'author' => $author
+    ];
+
+    $db::sql($query, $args);
+}
+
+if (isset($upd)) { //Редактирование записи
+    /*$query = "UPDATE new
+      SET header = :title
+          body = :body,
+          author = :author
+      WHERE id = :id
+    ";
+
+    $args = [
+        'id' => $id,
+        'header' => $header,
+        'body' => $body,
+        'author' => $author
+    ];
+
+    $db::sql($query, $args);*/
+    print 'upd';
+}
+
+if (isset($del)) { //Удаление записи
+    //$db::sql("DELETE FROM new WHERE id = ?", [$id]);
+    print 'del';
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+    <title>CRUD system</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -264,7 +322,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Manage <b>Employees</b></h2>
+                    <h2>Редактирование записей</h2>
                 </div>
                 <div class="col-sm-6">
                     <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Добавить новую запись</span></a>
@@ -289,9 +347,6 @@
             </tr>
             </thead>
             <?php
-            include '../backend/db.php';
-            $db = new DB();
-
             $data = $db::getRows("SELECT * FROM new"); //вернёт из БД все записи
             foreach ($data as $row) {
                 print ('
@@ -334,7 +389,7 @@
 <div id="addEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form action="crud.php" method="GET">
                 <div class="modal-header">
                     <h4 class="modal-title">Содать запись</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -342,20 +397,20 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Заголовок</label>
-                        <input type="text" class="form-control" required>
+                        <input name="header" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Текст статьи</label>
-                        <textarea class="form-control" required></textarea>
+                        <textarea name="body" class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
                         <label>Автор</label>
-                        <input type="text" class="form-control" required>
+                        <input name="author" type="text" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Отменить">
-                    <input type="submit" class="btn btn-success" value="Добавить">
+                    <input name="ok" type="submit" class="btn btn-success" value="Добавить">
                 </div>
             </form>
         </div>
@@ -366,7 +421,7 @@
 <div id="editEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form action="crud.php" method="GET">
                 <div class="modal-header">
                     <h4 class="modal-title">Редактировать запить</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -374,20 +429,20 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Заголовок</label>
-                        <input type="text" class="form-control" required>
+                        <input name="" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Текст статьи</label>
-                        <textarea class="form-control" required></textarea>
+                        <textarea name="" class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
                         <label>Автор</label>
-                        <input type="text" class="form-control" required>
+                        <input name="" type="text" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Отменить">
-                    <input type="submit" class="btn btn-info" value="Сохранить">
+                    <input name="upd" type="submit" class="btn btn-info" value="Сохранить">
                 </div>
             </form>
         </div>
@@ -398,9 +453,9 @@
 <div id="deleteEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form action="crud.php" method="GET">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Employee</h4>
+                    <h4 class="modal-title">Удалить запись</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -409,7 +464,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-danger" value="Удалить">
+                    <input name="del" type="submit" class="btn btn-danger" value="Удалить">
                 </div>
             </form>
         </div>
@@ -417,5 +472,3 @@
 </div>
 </body>
 </html>
-
-<?php
