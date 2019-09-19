@@ -6,22 +6,28 @@
     <link rel="stylesheet" href="../Assets/frontend/css/style.css">
 </head>
 <?php
-    include '../backend/db.php';
-    $db = new DB();
+require '../backend/db.php';
+$db = new DB();
+$id = $_GET['id'];
 
-    $id = $_GET['id'];
     $data = $db::getRows("SELECT * FROM new WHERE id = ?", [$id]); //вернёт из БД все записи по id
-
     foreach ($data as $row) {
         print ('
-        <div class="blog-post">
-            <h2 class="blog-post-title">'.$row['header'].'</h2>
-            <hr>
-            <img class="" src="http://placehold.jp/400x400.png" alt="фоточка, а на ней красоточка">
-            <p>'.$row['body'].'</p>
-            <p class="blog-post-meta">Автор статьи: '.$row['author'].'</p>
-            <p class="blog-post-meta">Просмотры: '.$row['views'].'</p>
-            <a href="index.php">Вернуться назад</a>
+        <div class="container">
+            <div class="blog-post">
+                <h2 class="blog-post-title">'.$row['header'].'</h2>
+                <hr>
+                <img class="" src="'.$row['img'].'" alt="*">
+                <p>'.$row['body'].'</p>
+                <p class="blog-post-meta">Автор статьи: '.$row['author'].'</p>
+                <p class="blog-post-meta">Просмотры: '.$row['views'].'</p>
+                <textarea name="comment" id="" cols="30" rows="" placeholder="Введите комментарий..."></textarea><br>
+                <a href="index.php">Вернуться назад</a>
+            </div>
         </div>');
     }
+
+
+
+
 ?>

@@ -2,6 +2,7 @@
 include '../backend/db.php';
 $db = new DB();
 
+$id = $_GET['id'];
 $header = $_GET['header'];
 $body = $_GET['body'];
 $author = $_GET['author'];
@@ -14,28 +15,27 @@ $del = $_GET['del']; //кнопка удаления
 if (isset($add)) { //Создание записи
     $query = "INSERT INTO new (
       header,
-      body,
-      author)
+      body
+    )
     VALUES (
       :header,
-      :body,
-      :author
+      :body
     )";
 
     $args = [
         'header' => $header,
         'body' => $body,
-        'author' => $author
+        //'author' => $author
     ];
 
     $db::sql($query, $args);
 }
 
 if (isset($upd)) { //Редактирование записи
-    /*$query = "UPDATE new
-      SET header = :title
+    $query = "UPDATE new
+      SET header = :header, 
           body = :body,
-          author = :author
+          //author = :author
       WHERE id = :id
     ";
 
@@ -43,16 +43,16 @@ if (isset($upd)) { //Редактирование записи
         'id' => $id,
         'header' => $header,
         'body' => $body,
-        'author' => $author
+        //'author' => $author
     ];
 
-    $db::sql($query, $args);*/
-    print 'upd';
+    $db::sql($query, $args);
+    var_dump('<pre>',$query, $args,'</pre>');
 }
 
 if (isset($del)) { //Удаление записи
-    //$db::sql("DELETE FROM new WHERE id = ?", [$id]);
-    print 'del';
+    $db::sql("DELETE FROM new WHERE id = ?", [$id]);
+    var_dump([$id]);
 }
 ?>
 
@@ -403,10 +403,10 @@ if (isset($del)) { //Удаление записи
                         <label>Текст статьи</label>
                         <textarea name="body" class="form-control" required></textarea>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label>Автор</label>
                         <input name="author" type="text" class="form-control" required>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Отменить">
@@ -429,16 +429,16 @@ if (isset($del)) { //Удаление записи
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Заголовок</label>
-                        <input name="" type="text" class="form-control" required>
+                        <input name="header" type="text" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Текст статьи</label>
-                        <textarea name="" class="form-control" required></textarea>
+                        <textarea name="body" class="form-control"></textarea>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label>Автор</label>
-                        <input name="" type="text" class="form-control" required>
-                    </div>
+                        <input name="author" type="text" class="form-control" required>
+                    </div>-->
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Отменить">

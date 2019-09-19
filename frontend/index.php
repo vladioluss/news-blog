@@ -1,5 +1,6 @@
 <?php
-    include '../backend/db.php';
+    session_start();
+    require '../backend/db.php';
     $db = new DB();
 ?>
 <head>
@@ -19,7 +20,9 @@
           <div class="col-4 text-center">
             <a class="blog-header-logo text-dark" href="">NEWS</a>
           </div>
+          <!--//TODO: если вошли в акк, то это заменить на ВЫЙТИ-->
           <div class="col-4 d-flex justify-content-end align-items-center">
+              <div><?php var_dump($_SESSION['id']);?></div>
             <a class="btn btn-sm btn-outline-secondary" href="login.php">Войти</a>&nbsp;
             <a class="btn btn-sm btn-outline-secondary" href="reg.php">Регистрация</a>
           </div>
@@ -27,7 +30,6 @@
       </header>
       <br><br>
         <?php
-
         $data = $db::getRows("SELECT * FROM new"); //вернёт из БД все записи
         foreach ($data as $row) {
             print ('
@@ -44,7 +46,7 @@
                                 <div class="mb-1 text-muted">Просмотров: '.$row['views'].'</div>
                                 <a href="view.php?id='.$row['id'].'">Перейти к новости</a>
                             </div>
-                        <img class="card-img-right flex-auto d-none d-lg-block" src="http://placehold.jp/400x400.png" alt="фоточка, а на ней красоточка">
+                        <img class="card-img-right flex-auto d-none d-lg-block" src="'.$row['img'].'" alt="*">
                         </div>
                     </div>
                 </div>
@@ -53,6 +55,6 @@
     </div>
 
     <footer class="blog-footer">
-      <p>NEWS SITE</p>
+        <p>NEWS SITE</p>
     </footer>
 </body>
