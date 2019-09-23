@@ -1,7 +1,6 @@
 <?php
-    session_start();
-    require '../backend/db.php';
-    $db = new DB();
+session_start();
+require "../backend/db.php"
 ?>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -12,46 +11,44 @@
 </head>
 <body>
     <div class="container">
-      <header class="blog-header py-3">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-          <div class="col-4 pt-1">
-            <a class="text-muted" href="#">Logo</a>
-          </div>
-          <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark" href="">NEWS</a>
-          </div>
-          <!--//TODO: если вошли в акк, то это заменить на ВЫЙТИ-->
-          <div class="col-4 d-flex justify-content-end align-items-center">
-              <div><?php var_dump($_SESSION['id']);?></div>
-            <a class="btn btn-sm btn-outline-secondary" href="login.php">Войти</a>&nbsp;
-            <a class="btn btn-sm btn-outline-secondary" href="reg.php">Регистрация</a>
-          </div>
-        </div>
-      </header>
-      <br><br>
-        <?php
-        $data = $db::getRows("SELECT * FROM new"); //вернёт из БД все записи
-        foreach ($data as $row) {
-            print ('
-            <div class="">
-                <div class="mb-2">
-                    <div class="col-md-6">
-                        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                            <div class="card-body d-flex flex-column align-items-start">
-                                <h3 class="mb-0">
-                                    <a class="text-dark" href="view.php?id='.$row['id'].'">'.$row['header'].'</a>
-                                </h3>
-                                <p class="card-text mb-auto">'.$row['body'].'</p>
-                                <div class="mb-1 text-muted">Автор: '.$row['author'].'</div>
-                                <div class="mb-1 text-muted">Просмотров: '.$row['views'].'</div>
-                                <a href="view.php?id='.$row['id'].'">Перейти к новости</a>
-                            </div>
-                        <img class="card-img-right flex-auto d-none d-lg-block" src="'.$row['img'].'" alt="*">
+        <header class="blog-header py-3">
+            <div class="row flex-nowrap justify-content-between align-items-center">
+                <div class="col-4 pt-1">
+                    <a class="text-muted" href="#">Logo</a>
+                </div>
+                <div class="col-4 text-center">
+                    <a class="blog-header-logo text-dark" href="">NEWS</a>
+                 </div>
+                <div class="col-4 d-flex justify-content-end align-items-center">
+                    <div><?php var_dump($_SESSION['id']);?></div>
+                    <a class="btn btn-sm btn-outline-secondary" href="login.php">Войти</a>&nbsp;
+                    <a class="btn btn-sm btn-outline-secondary" href="reg.php">Регистрация</a>
+                </div>
+            </div>
+        </header><br><br>
+        <div class="d-flex flex-wrap">
+            <?php
+            $data = $db->query("SELECT * FROM new")->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($data as $row) {
+                print('
+                <div class="col-lg-6">
+                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <h3 class="mb-0">
+                                <a class="text-dark" href="view.php?id='.$row['id'].'">'.$row['header'].'</a>
+                            </h3>
+                            <p class="card-text mb-auto">'.$row['body'].'</p>
+                            <div class="mb-1 text-muted">Автор: '.$row['author'].'</div>
+                            <div class="mb-1 text-muted">Просмотров: '.$row['views'].'</div>
+                            <a href="view.php?id='.$row['id'].'">Перейти к новости</a>
                         </div>
+                        <img class="card-img-right flex-auto d-none d-lg-block" src="'.$row['img'].'" alt="*">
                     </div>
                 </div>
-            </div>');
-        } ?>
+                ');
+            }
+            ?>
+        </div>
     </div>
 
     <footer class="blog-footer">

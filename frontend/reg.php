@@ -1,25 +1,32 @@
 <?php
 session_start();
 require '../backend/db.php';
-$db = new DB();
 
 $login = $_POST['login'];
 $password = $_POST['password'];
 $reg = $_POST['reg'];
 
 if(isset($reg)) {
-    //check if username already exists
     $query = "SELECT COUNT(login) AS num FROM users WHERE login = :login";
-    $args = ['login' => $login];
-    $row = $db->getRow($query, $args);
-    if($row['num'] > 0) { //If username already exists - display error
-        die('Такой пользователь уже зарегистрирован<br><a href="reg.php">Вернуться назад</a>');
+    $params = [':login' => $login];
+    $data = $db->prepare($query);
+    $data->execute($params);
+
+    $row = $data->fetch(PDO::FETCH_ASSOC);
+    if($row['num'] > 0) {
+        die('Пользователь уже существует!');
     }
-    else {
-        $query = "INSERT INTO users (login, password) VALUES (:login, :password)";
-        $args = ['login' => $login, 'password' => $password];
-        $db::sql($query, $args);
-        die("Вы зарегистрировались<br><a href='login.php'>Вернуться назад</a>");
+
+    $passwordHash = password_hash($password, PASSWORD_BCRYPT, array("cost" => 12));
+
+    $query = "INSERT INTO users (login, password) VALUES (:login, :password)";
+    $params = [':login' => $login, ':password' => $passwordHash];
+    $data = $db->prepare($query);
+    $data->execute($params);
+
+    if($data) {
+        echo 'Вы зарегистрировались';
+        var_dump($query, $params);
     }
 }
 ?>

@@ -1,58 +1,35 @@
 <?php
 include '../backend/db.php';
-$db = new DB();
 
-$id = $_GET['id'];
-$header = $_GET['header'];
-$body = $_GET['body'];
-$author = $_GET['author'];
-$add = $_GET['ok']; //кнопка создания
+$id = $_POST['id'];
+$header = $_POST['header'];
+$body = $_POST['body'];
 
-$upd = $_GET['upd']; //кнопка редаттирования
-
-$del = $_GET['del']; //кнопка удаления
+$add = $_POST['ok']; //кнопка создания
+$upd = $_POST['upd']; //кнопка редаттирования
+$del = $_POST['del']; //кнопка удаления
 
 if (isset($add)) { //Создание записи
-    $query = "INSERT INTO new (
-      header,
-      body
-    )
-    VALUES (
-      :header,
-      :body
-    )";
-
-    $args = [
-        'header' => $header,
-        'body' => $body,
-        //'author' => $author
-    ];
-
-    $db::sql($query, $args);
+    $query = "INSERT INTO new (header,body) VALUES (:header,:body)";
+    $params = ['header' => $header, 'body' => $body];
+    $stmt = $db->prepare($query);
+    $stmt->execute($params);
 }
 
 if (isset($upd)) { //Редактирование записи
-    $query = "UPDATE new
-      SET header = :header, 
-          body = :body,
-          //author = :author
-      WHERE id = :id
-    ";
-
-    $args = [
-        'id' => $id,
-        'header' => $header,
-        'body' => $body,
-        //'author' => $author
-    ];
-
-    $db::sql($query, $args);
-    var_dump('<pre>',$query, $args,'</pre>');
+    $query = "UPDATE new SET header = :header, body = :body WHERE id = :id";
+    $params = ['id' => $id, 'header' => $header, 'body' => $body];
+    $stmt = $db->prepare($query);
+    $stmt->execute($params);
+    var_dump($query,$params);
 }
 
 if (isset($del)) { //Удаление записи
-    $db::sql("DELETE FROM new WHERE id = ?", [$id]);
-    var_dump([$id]);
+    $query =("DELETE FROM new WHERE id = :id");
+    $params = ['id' => $id];
+    $stmt = $db->prepare($query);
+    $stmt->execute($params);
+    var_dump($query,$params);
 }
 ?>
 
@@ -341,13 +318,12 @@ if (isset($del)) { //Удаление записи
                 </th>
                 <th>Заголовок</th>
                 <th>Текст статьи</th>
-                <th>Автор</th>
                 <th>Просмотры</th>
                 <th>Действия</th>
             </tr>
             </thead>
             <?php
-            $data = $db::getRows("SELECT * FROM new"); //вернёт из БД все записи
+            $data = $db->query("SELECT * FROM new")->fetchAll(PDO::FETCH_ASSOC); //вернёт из БД все записи
             foreach ($data as $row) {
                 print ('
                 <tbody>
@@ -360,7 +336,6 @@ if (isset($del)) { //Удаление записи
                         </td>
                         <td>'.$row['header'].'</td>
                         <td>'.$row['body'].'</td>
-                        <td>'.$row['author'].'</td>
                         <td>'.$row['views'].'</td>
                         <td>
                             <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Редактирование">&#xE254;</i></a>
@@ -389,7 +364,7 @@ if (isset($del)) { //Удаление записи
 <div id="addEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="crud.php" method="GET">
+            <form action="crud.php" method="POST">
                 <div class="modal-header">
                     <h4 class="modal-title">Содать запись</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -403,10 +378,6 @@ if (isset($del)) { //Удаление записи
                         <label>Текст статьи</label>
                         <textarea name="body" class="form-control" required></textarea>
                     </div>
-                    <!--<div class="form-group">
-                        <label>Автор</label>
-                        <input name="author" type="text" class="form-control" required>
-                    </div>-->
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Отменить">
@@ -421,7 +392,7 @@ if (isset($del)) { //Удаление записи
 <div id="editEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="crud.php" method="GET">
+            <form action="crud.php" method="POST">
                 <div class="modal-header">
                     <h4 class="modal-title">Редактировать запить</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -435,10 +406,6 @@ if (isset($del)) { //Удаление записи
                         <label>Текст статьи</label>
                         <textarea name="body" class="form-control"></textarea>
                     </div>
-                    <!--<div class="form-group">
-                        <label>Автор</label>
-                        <input name="author" type="text" class="form-control" required>
-                    </div>-->
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Отменить">
@@ -453,7 +420,7 @@ if (isset($del)) { //Удаление записи
 <div id="deleteEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="crud.php" method="GET">
+            <form action="crud.php" method="POST">
                 <div class="modal-header">
                     <h4 class="modal-title">Удалить запись</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
