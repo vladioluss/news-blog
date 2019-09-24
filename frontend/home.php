@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: grish
- * Date: 23.09.2019
- * Time: 14:42
- */
-
 session_start();
-
 
 /**
  * Check if the user is logged in.

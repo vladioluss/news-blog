@@ -14,15 +14,19 @@ require "../backend/db.php"
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
-                    <a class="text-muted" href="#">Logo</a>
+                    <a class="text-muted" href="">Logo</a>
                 </div>
                 <div class="col-4 text-center">
                     <a class="blog-header-logo text-dark" href="">NEWS</a>
                  </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
-                    <div><?php var_dump($_SESSION['id']);?></div>
-                    <a class="btn btn-sm btn-outline-secondary" href="login.php">Войти</a>&nbsp;
-                    <a class="btn btn-sm btn-outline-secondary" href="reg.php">Регистрация</a>
+                    <?php
+                    if ($_SESSION['login'] == true) {
+                        print('<div>Вы вошли как: '.$_SESSION['login'].'</div><a class="btn btn-sm btn-outline-secondary" href="unset.php">Выйти</a>');
+                    }
+                    else print ('<a class="btn btn-sm btn-outline-secondary" href="login.php">Войти</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="reg.php">Регистрация</a>');
+                    ?>
                 </div>
             </div>
         </header><br><br>
@@ -38,7 +42,6 @@ require "../backend/db.php"
                                 <a class="text-dark" href="view.php?id='.$row['id'].'">'.$row['header'].'</a>
                             </h3>
                             <p class="card-text mb-auto">'.$row['body'].'</p>
-                            <div class="mb-1 text-muted">Автор: '.$row['author'].'</div>
                             <div class="mb-1 text-muted">Просмотров: '.$row['views'].'</div>
                             <a href="view.php?id='.$row['id'].'">Перейти к новости</a>
                         </div>

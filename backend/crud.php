@@ -268,25 +268,25 @@ if (isset($del)) { //Удаление записи
         }
     </style>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             // Activate tooltip
             $('[data-toggle="tooltip"]').tooltip();
 
             // Select/Deselect checkboxes
             var checkbox = $('table tbody input[type="checkbox"]');
-            $("#selectAll").click(function(){
-                if(this.checked){
-                    checkbox.each(function(){
+            $("#selectAll").click(function() {
+                if(this.checked) {
+                    checkbox.each(function() {
                         this.checked = true;
                     });
-                } else{
-                    checkbox.each(function(){
+                } else {
+                    checkbox.each(function() {
                         this.checked = false;
                     });
                 }
             });
-            checkbox.click(function(){
-                if(!this.checked){
+            checkbox.click(function() {
+                if(!this.checked) {
                     $("#selectAll").prop("checked", false);
                 }
             });
@@ -316,6 +316,7 @@ if (isset($del)) { //Удаление записи
                         <label for="selectAll"></label>
                     </span>
                 </th>
+                <th>ID</th>
                 <th>Заголовок</th>
                 <th>Текст статьи</th>
                 <th>Просмотры</th>
@@ -334,6 +335,7 @@ if (isset($del)) { //Удаление записи
                                 <label for="checkbox1"></label>
                             </span>
                         </td>
+                        <td>'.$row['id'].'</td>
                         <td>'.$row['header'].'</td>
                         <td>'.$row['body'].'</td>
                         <td>'.$row['views'].'</td>
@@ -394,7 +396,7 @@ if (isset($del)) { //Удаление записи
         <div class="modal-content">
             <form action="crud.php" method="POST">
                 <div class="modal-header">
-                    <h4 class="modal-title">Редактировать запить</h4>
+                    <h4 class="modal-title">Редактировать запить ID:<?var_dump($_POST['id']);?></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -422,7 +424,7 @@ if (isset($del)) { //Удаление записи
         <div class="modal-content">
             <form action="crud.php" method="POST">
                 <div class="modal-header">
-                    <h4 class="modal-title">Удалить запись</h4>
+                    <h4 class="modal-title">Удалить запись ID:<?var_dump($_POST['id']);?></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
