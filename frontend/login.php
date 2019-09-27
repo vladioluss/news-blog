@@ -17,7 +17,7 @@ if(isset($loginIn)) {
     $user = $stmt->fetch(PDO::FETCH_LAZY);
     if ($user == true) {
         $_SESSION['login'] = $user['login'];
-        var_dump($_SESSION['login']);
+        print('Вы вошли как: '.$_SESSION['login']);
     }
     else print 'Ошибка входа!';
 }
